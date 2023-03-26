@@ -156,6 +156,7 @@ function buildManifest(
 			file,
 			links: [],
 			scripts: [],
+            styles: [],
 			routeData: serializeRouteData(pageData.route, settings.config.trailingSlash),
 		});
 		staticFiles.push(file);
@@ -192,6 +193,7 @@ function buildManifest(
 					.filter((script) => script.stage === 'head-inline')
 					.map(({ stage, content }) => ({ stage, children: content })),
 			],
+            styles: pageData.inlineStyles,
 			routeData: serializeRouteData(pageData.route, settings.config.trailingSlash),
 		});
 	}

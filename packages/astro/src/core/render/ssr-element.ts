@@ -26,6 +26,19 @@ export function createLinkStylesheetElementSet(hrefs: string[], base?: string) {
 	return new Set<SSRElement>(hrefs.map((href) => createLinkStylesheetElement(href, base)));
 }
 
+export function createInlineStyleElement(text: string): SSRElement {
+	return {
+		props: {
+			type: 'text/css',
+		},
+		children: text,
+	};
+}
+
+export function createInlineStyleElementSet(texts: string[]) {
+	return new Set(texts.map(createInlineStyleElement));
+}
+
 export function createModuleScriptElement(
 	script: { type: 'inline' | 'external'; value: string },
 	base?: string

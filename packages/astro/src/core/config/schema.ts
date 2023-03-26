@@ -21,6 +21,7 @@ const ASTRO_CONFIG_DEFAULTS: AstroUserConfig & any = {
 		server: './dist/server/',
 		assets: '_astro',
 		serverEntry: 'entry.mjs',
+		inlineStylesheets: false,
 	},
 	server: {
 		host: false,
@@ -98,6 +99,10 @@ export const AstroConfigSchema = z.object({
 				.transform((val) => new URL(val)),
 			assets: z.string().optional().default(ASTRO_CONFIG_DEFAULTS.build.assets),
 			serverEntry: z.string().optional().default(ASTRO_CONFIG_DEFAULTS.build.serverEntry),
+			inlineStylesheets: z
+				.boolean()
+				.optional()
+				.default(ASTRO_CONFIG_DEFAULTS.build.inlineStylesheets),
 		})
 		.optional()
 		.default({}),
@@ -223,6 +228,10 @@ export function createRelativeSchema(cmd: string, fileProtocolRoot: URL) {
 					.transform((val) => new URL(val, fileProtocolRoot)),
 				assets: z.string().optional().default(ASTRO_CONFIG_DEFAULTS.build.assets),
 				serverEntry: z.string().optional().default(ASTRO_CONFIG_DEFAULTS.build.serverEntry),
+				inlineStylesheets: z
+					.boolean()
+					.optional()
+					.default(ASTRO_CONFIG_DEFAULTS.build.inlineStylesheets),
 			})
 			.optional()
 			.default({}),

@@ -32,7 +32,11 @@ import { AstroError } from '../errors/index.js';
 import { debug, info } from '../logger/core.js';
 import { createEnvironment, createRenderContext, renderPage } from '../render/index.js';
 import { callGetStaticPaths } from '../render/route-cache.js';
-import { createLinkStylesheetElementSet, createModuleScriptsSet } from '../render/ssr-element.js';
+import {
+	createLinkStylesheetElementSet,
+    createInlineStyleElementSet,
+	createModuleScriptsSet,
+} from '../render/ssr-element.js';
 import { createRequest } from '../request.js';
 import { matchRoute } from '../routing/match.js';
 import { getOutputFilename } from '../util.js';
@@ -166,6 +170,7 @@ async function generatePage(
 	const pageInfo = getPageDataByComponent(internals, pageData.route.component);
 	const linkIds: string[] = sortedCSS(pageData);
 	const scripts = pageInfo?.hoistedScript ?? null;
+	const styles = pageInfo?.inlineStyles ?? null;
 
 	const pageModule = ssrEntry.pageMap?.get(pageData.component);
 
@@ -185,6 +190,7 @@ async function generatePage(
 		internals,
 		linkIds,
 		scripts,
+		styles,
 		mod: pageModule,
 		renderers,
 	};
@@ -275,6 +281,7 @@ interface GeneratePathOptions {
 	internals: BuildInternals;
 	linkIds: string[];
 	scripts: { type: 'inline' | 'external'; value: string } | null;
+	styles: string[] | null;
 	mod: ComponentInstance;
 	renderers: SSRLoadedRenderer[];
 }
@@ -342,7 +349,15 @@ async function generatePath(
 	gopts: GeneratePathOptions
 ) {
 	const { settings, logging, origin, routeCache } = opts;
-	const { mod, internals, linkIds, scripts: hoistedScripts, pageData, renderers } = gopts;
+	const {
+		mod,
+		internals,
+		linkIds,
+		scripts: hoistedScripts,
+		styles: _styles,
+		pageData,
+		renderers,
+	} = gopts;
 
 	// This adds the page name to the array so it can be shown as part of stats.
 	if (pageData.route.type === 'page') {
@@ -356,6 +371,7 @@ async function generatePath(
 		hoistedScripts ? [hoistedScripts] : [],
 		settings.config.base
 	);
+	const styles = createInlineStyleElementSet(_styles ?? []);
 
 	if (settings.scripts.some((script) => script.stage === 'page')) {
 		const hashedFilePath = internals.entrySpecifierToBundleMap.get(PAGE_SCRIPT_ID);
@@ -418,6 +434,7 @@ async function generatePath(
 		request: createRequest({ url, headers: new Headers(), logging, ssr }),
 		componentMetadata: internals.componentMetadata,
 		scripts,
+		styles,
 		links,
 		route: pageData.route,
 	});

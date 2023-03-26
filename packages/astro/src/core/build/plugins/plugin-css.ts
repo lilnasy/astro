@@ -262,6 +262,30 @@ export function rollupPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] 
 				}
 			},
 		},
+		{
+			name: 'astro:rollup-plugin-inline-stylesheets',
+			// enforce: 'post',
+			async generateBundle(_outputOptions, bundle) {
+				if (settings.config.build.inlineStylesheets !== true) return;
+				const assetInlineLimit = settings.config.vite?.build?.assetsInlineLimit ?? 4096;
+				for (const [id, stylesheet] of Object.entries(bundle)) {
+					if (
+						stylesheet.type === 'asset' &&
+						stylesheet.name?.endsWith('.css') &&
+						typeof stylesheet.source === 'string' &&
+						Buffer.byteLength(stylesheet.source) <= assetInlineLimit
+					) {
+						for (const pageData of eachPageData(internals)) {
+							if (pageData.css.has(stylesheet.fileName)) {
+								pageData.inlineStyles.push(stylesheet.source);
+								pageData.css.delete(stylesheet.fileName);
+								delete bundle[id];
+							}
+						}
+					}
+				}
+			},
+		},
 	];
 }
 

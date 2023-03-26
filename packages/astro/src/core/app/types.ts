@@ -20,6 +20,7 @@ export interface RouteInfo {
 		// Hoisted
 		| { type: 'inline' | 'external'; value: string }
 	)[];
+    styles: string[];
 }
 
 export type SerializedRouteInfo = Omit<RouteInfo, 'routeData'> & {
