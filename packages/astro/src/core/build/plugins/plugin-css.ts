@@ -5,7 +5,7 @@ import { type Plugin as VitePlugin, type ResolvedConfig } from 'vite';
 import { isBuildableCSSRequest } from '../../render/dev/util.js';
 import type { BuildInternals } from '../internal';
 import type { AstroBuildPlugin } from '../plugin';
-import type { PageBuildData, StaticBuildOptions } from '../types';
+import type { PageBuildData, StaticBuildOptions, StylesheetAsset } from '../types';
 
 import { PROPAGATED_ASSET_FLAG } from '../../../content/consts.js';
 import * as assetName from '../css-asset-name.js';
@@ -233,6 +233,48 @@ export function rollupPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] 
 					}
 				}
 			},
+		},
+		{
+			name: 'astro:rollup-plugin-inline-stylesheets',
+			enforce: 'post',
+			async generateBundle(_outputOptions, bundle) {
+
+				const inlineConfig = settings.config.experimental.inlineStylesheets;
+				const { assetsInlineLimit = 4096 } = settings.config.vite?.build ?? {};
+				
+				for (const [id, stylesheet] of Object.entries(bundle)) {
+					if (
+						stylesheet.type !== 'asset' ||
+						stylesheet.name?.endsWith('.css') !== true ||
+						typeof stylesheet.source !== 'string'
+					) break;
+
+					const assetSize = new TextEncoder().encode(stylesheet.source).byteLength
+					
+					const toBeInlined =
+						inlineConfig === 'always'
+							? true
+							: inlineConfig === 'never'
+							? false
+							: assetSize <= assetsInlineLimit;
+
+					if (toBeInlined) delete bundle[id];
+					
+					// there should be a single js object for each stylesheet,
+					// allowing the single reference to be shared and checked for duplicates
+					const sheet: StylesheetAsset =
+						toBeInlined
+							? { type: 'inline', content: stylesheet.source }
+							: { type: 'external', src: stylesheet.fileName }
+					
+					for (const pageData of eachPageData(internals)) {
+						const orderingInfo = pageData.css.get(stylesheet.fileName);
+						if (orderingInfo === undefined) break;
+						pageData.styles.push({ ...orderingInfo, sheet });
+						pageData.css.delete(stylesheet.fileName);
+					}
+				}
+			}
 		},
 	];
 }
