@@ -375,7 +375,7 @@ async function generatePath(
 		hoistedScripts ? [hoistedScripts] : [],
 		settings.config.base
 	);
-	const styles = createStylesheetElementSet(_styles ?? []);
+	const styles = createStylesheetElementSet(_styles ?? [], settings.config.base);
 
 	if (settings.scripts.some((script) => script.stage === 'page')) {
 		const hashedFilePath = internals.entrySpecifierToBundleMap.get(PAGE_SCRIPT_ID);
