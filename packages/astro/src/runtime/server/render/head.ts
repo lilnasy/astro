@@ -16,7 +16,7 @@ export function renderAllHeadContent(result: SSRResult) {
 	result._metadata.hasRenderedHead = true;
 	const styles = Array.from(result.styles)
 		.filter(uniqueElements)
-		.map((style) => style.props.rel = 'stylesheet' ? renderElement('link', style) : renderElement('style', style));
+		.map((style) => style.props.rel === 'stylesheet' ? renderElement('link', style) : renderElement('style', style));
 	// Clear result.styles so that any new styles added will be inlined.
 	result.styles.clear();
 	const scripts = Array.from(result.scripts)
