@@ -24,7 +24,10 @@ export interface PageBuildData {
 	propagatedStyles: Map<string, Set<string>>;
 	propagatedScripts: Map<string, Set<string>>;
 	hoistedScript: { type: 'inline' | 'external'; value: string } | undefined;
-	inlineStyles: string[];
+	styles: ({ depth: number, order: number } & (
+		| { type: 'inline', content: string }
+		| { type: 'external', src: string }
+	))[];
 }
 export type AllPagesData = Record<ComponentPath, PageBuildData>;
 

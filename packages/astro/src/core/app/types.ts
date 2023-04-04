@@ -20,7 +20,10 @@ export interface RouteInfo {
 		// Hoisted
 		| { type: 'inline' | 'external'; value: string }
 	)[];
-    styles: string[];
+    styles: (
+		| { type: 'inline', content: string }
+		| { type: 'external', src: string}
+	)[];
 }
 
 export type SerializedRouteInfo = Omit<RouteInfo, 'routeData'> & {

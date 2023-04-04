@@ -275,6 +275,33 @@ export function sortedCSS(pageData: PageBuildData) {
 		.map(([id]) => id);
 }
 
+export function sortedStylesheets(pageData: PageBuildData) {
+	return pageData.styles.sort((a, b) => {
+		let depthA = a.depth,
+			depthB = b.depth,
+			orderA = a.order,
+			orderB = b.order
+
+		if (orderA === -1 && orderB >= 0) {
+			return 1;
+		} else if (orderB === -1 && orderA >= 0) {
+			return -1;
+		} else if (orderA > orderB) {
+			return 1;
+		} else if (orderA < orderB) {
+			return -1;
+		} else {
+			if (depthA === -1) {
+				return -1;
+			} else if (depthB === -1) {
+				return 1;
+			} else {
+				return depthA > depthB ? -1 : 1;
+			}
+		}
+	}).map(({ depth, order, ...stylesheet }) => stylesheet)
+}
+
 export function isHoistedScript(internals: BuildInternals, id: string): boolean {
 	return internals.hoistedScriptIdToPagesMap.has(id);
 }

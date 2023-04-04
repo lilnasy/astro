@@ -193,7 +193,7 @@ function buildManifest(
 					.filter((script) => script.stage === 'head-inline')
 					.map(({ stage, content }) => ({ stage, children: content })),
 			],
-            styles: pageData.inlineStyles,
+            styles: pageData.styles,
 			routeData: serializeRouteData(pageData.route, settings.config.trailingSlash),
 		});
 	}

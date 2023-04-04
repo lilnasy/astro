@@ -264,22 +264,40 @@ export function rollupPluginAstroBuildCSS(options: PluginOptions): VitePlugin[] 
 		},
 		{
 			name: 'astro:rollup-plugin-inline-stylesheets',
-			// enforce: 'post',
 			async generateBundle(_outputOptions, bundle) {
-				if (settings.config.build.inlineStylesheets !== true) return;
-				const assetInlineLimit = settings.config.vite?.build?.assetsInlineLimit ?? 4096;
+				const stylesheetConfig = settings.config.experimental.stylesheets
+				const viteInlineLimit = settings.config.vite?.build?.assetsInlineLimit ?? 4096
 				for (const [id, stylesheet] of Object.entries(bundle)) {
 					if (
 						stylesheet.type === 'asset' &&
 						stylesheet.name?.endsWith('.css') &&
-						typeof stylesheet.source === 'string' &&
-						Buffer.byteLength(stylesheet.source) <= assetInlineLimit
+						typeof stylesheet.source === 'string'
 					) {
 						for (const pageData of eachPageData(internals)) {
-							if (pageData.css.has(stylesheet.fileName)) {
-								pageData.inlineStyles.push(stylesheet.source);
+							const orderingInfo = pageData.css.get(stylesheet.fileName)
+							if (orderingInfo !== undefined) {
+								const toBeInlined =
+									stylesheetConfig === 'inline'
+										? true
+										: stylesheetConfig === 'external'
+										? false
+										: Buffer.byteLength(stylesheet.source) <= viteInlineLimit
+								if (toBeInlined) {
+									pageData.styles.push({
+										type: 'inline',
+										content: stylesheet.source,
+										...orderingInfo
+									});
+									delete bundle[id]
+								}
+								else {
+									pageData.styles.push({
+										type: 'external',
+										src: stylesheet.name,
+										...orderingInfo
+									})
+								}
 								pageData.css.delete(stylesheet.fileName);
-								delete bundle[id];
 							}
 						}
 					}

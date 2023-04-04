@@ -26,17 +26,32 @@ export function createLinkStylesheetElementSet(hrefs: string[], base?: string) {
 	return new Set<SSRElement>(hrefs.map((href) => createLinkStylesheetElement(href, base)));
 }
 
-export function createInlineStyleElement(text: string): SSRElement {
-	return {
-		props: {
-			type: 'text/css',
-		},
-		children: text,
-	};
+type Stylesheet =
+	| { type: 'inline', content: string }
+	| { type: 'external', src: string }
+
+export function createStylesheetElement(stylesheet: Stylesheet, base?: string): SSRElement {
+	if (stylesheet.type === 'inline') {
+		return {
+			props: {
+				type: 'text/css'
+			},
+			children: stylesheet.content
+		}
+	}
+	else {
+		return {
+			props: {
+				rel: 'stylesheet',
+				href: joinToRoot(stylesheet.src, base)
+			},
+			children: ''
+		}
+	}
 }
 
-export function createInlineStyleElementSet(texts: string[]) {
-	return new Set(texts.map(createInlineStyleElement));
+export function createStylesheetElementSet(stylesheets: Stylesheet[], base?: string): Set<SSRElement> {
+	return new Set(stylesheets.map(s => createStylesheetElement(s, base)));
 }
 
 export function createModuleScriptElement(

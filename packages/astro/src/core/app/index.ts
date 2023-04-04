@@ -21,7 +21,7 @@ import {
 } from '../render/index.js';
 import { RouteCache } from '../render/route-cache.js';
 import {
-    createInlineStyleElementSet,
+    createStylesheetElementSet,
 	createLinkStylesheetElementSet,
 	createModuleScriptElement,
 } from '../render/ssr-element.js';
@@ -175,7 +175,7 @@ export class App {
 		const pathname = '/' + this.removeBase(url.pathname);
 		const info = this.#routeDataToRouteInfo.get(routeData!)!;
 		const links = createLinkStylesheetElementSet(info.links);
-        const styles = createInlineStyleElementSet(info.styles);
+        const styles = createStylesheetElementSet(info.styles);
 
 		let scripts = new Set<SSRElement>();
 		for (const script of info.scripts) {

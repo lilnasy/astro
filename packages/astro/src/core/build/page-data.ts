@@ -57,7 +57,7 @@ export async function collectPagesData(
 				propagatedStyles: new Map(),
 				propagatedScripts: new Map(),
 				hoistedScript: undefined,
-				inlineStyles: [],
+				styles: [],
 			};
 
 			clearInterval(routeCollectionLogTimeout);
@@ -81,7 +81,7 @@ export async function collectPagesData(
 			propagatedStyles: new Map(),
 			propagatedScripts: new Map(),
 			hoistedScript: undefined,
-			inlineStyles: [],
+			styles: [],
 		};
 	}
 

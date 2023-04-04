@@ -34,7 +34,7 @@ import { createEnvironment, createRenderContext, renderPage } from '../render/in
 import { callGetStaticPaths } from '../render/route-cache.js';
 import {
 	createLinkStylesheetElementSet,
-    createInlineStyleElementSet,
+    createStylesheetElementSet,
 	createModuleScriptsSet,
 } from '../render/ssr-element.js';
 import { createRequest } from '../request.js';
@@ -46,6 +46,7 @@ import {
 	eachPrerenderedPageData,
 	getPageDataByComponent,
 	sortedCSS,
+	sortedStylesheets,
 } from './internal.js';
 import type { PageBuildData, SingleFileBuiltModule, StaticBuildOptions } from './types';
 import { getTimeStat } from './util.js';
@@ -170,7 +171,7 @@ async function generatePage(
 	const pageInfo = getPageDataByComponent(internals, pageData.route.component);
 	const linkIds: string[] = sortedCSS(pageData);
 	const scripts = pageInfo?.hoistedScript ?? null;
-	const styles = pageInfo?.inlineStyles ?? null;
+	const styles = sortedStylesheets(pageData);
 
 	const pageModule = ssrEntry.pageMap?.get(pageData.component);
 
@@ -281,7 +282,10 @@ interface GeneratePathOptions {
 	internals: BuildInternals;
 	linkIds: string[];
 	scripts: { type: 'inline' | 'external'; value: string } | null;
-	styles: string[] | null;
+	styles: (
+		| { type: 'inline', content: string }
+		| { type: 'external', src: string }
+	)[] | null;
 	mod: ComponentInstance;
 	renderers: SSRLoadedRenderer[];
 }
@@ -371,7 +375,7 @@ async function generatePath(
 		hoistedScripts ? [hoistedScripts] : [],
 		settings.config.base
 	);
-	const styles = createInlineStyleElementSet(_styles ?? []);
+	const styles = createStylesheetElementSet(_styles ?? []);
 
 	if (settings.scripts.some((script) => script.stage === 'page')) {
 		const hashedFilePath = internals.entrySpecifierToBundleMap.get(PAGE_SCRIPT_ID);
