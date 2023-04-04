@@ -180,7 +180,7 @@ export const AstroConfigSchema = z.object({
 	experimental: z
 		.object({
 			assets: z.boolean().optional().default(ASTRO_CONFIG_DEFAULTS.experimental.assets),
-			stylesheets: z.enum(['external', 'auto', 'inline']).optional().default(ASTRO_CONFIG_DEFAULTS.experimental.stylsheets)
+			stylesheets: z.enum(['external', 'auto', 'inline']).optional().default(ASTRO_CONFIG_DEFAULTS.experimental.stylesheets)
 		})
 		.optional()
 		.default({}),
