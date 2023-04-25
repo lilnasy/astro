@@ -43,7 +43,8 @@ import {
 	eachPageData,
 	eachPrerenderedPageData,
 	getPageDataByComponent,
-	sortedStylesheets,
+	cssOrder,
+	mergeInlineCss,
 } from './internal.js';
 import type {
 	PageBuildData,
@@ -166,7 +167,10 @@ async function generatePage(
 	// may be used in the future for handling rel=modulepreload, rel=icon, rel=manifest etc.
 	const linkIds: [] = [];
 	const scripts = pageInfo?.hoistedScript ?? null;
-	const styles = sortedStylesheets(pageData);
+	const styles = pageData.styles
+		.sort(cssOrder)
+		.map(({ sheet }) => sheet)
+		.reduce(mergeInlineCss, []);
 
 	const pageModule = ssrEntry.pageMap?.get(pageData.component);
 
