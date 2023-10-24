@@ -1,5 +1,11 @@
 # astro
 
+## 3.5.0
+
+### Minor Changes
+
+- [`2114a8d5c`](https://github.com/withastro/astro/commit/2114a8d5c18214267dd1849dafbdbf318203fc7c) Thanks [@lilnasy](https://github.com/lilnasy)! - Another new feature
+
 ## 3.4.0
 
 ### Minor Changes
