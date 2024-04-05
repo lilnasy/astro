@@ -8,16 +8,15 @@ type UpgradeHandler =
             ? UpgradeHandler
             : never
 
-const server = new ws.WebSocketServer({ noServer: true })
-
 export function createWebsocketHandler(app: NodeApp): UpgradeHandler {
-	return async (req, socket, head) => {
+    const server = new ws.WebSocketServer({ noServer: true })
+    return async (req, socket, head) => {
         let websocket: WebSocket
 
         const response = await app.render(NodeApp.createRequest(req), {
             addCookieHeader: true,
             locals: {
-                upgradeWebSocket() {
+                async upgradeWebSocket() {
                     websocket = new WebSocket
                     return { socket: websocket, response: new UpgradeResponse }
                 }

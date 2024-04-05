@@ -1,9 +1,11 @@
 import type { AstroAdapter, AstroIntegration } from 'astro';
 import { AstroError } from 'astro/errors';
 import type { Options, UserOptions } from './types.js';
+import * as ws from 'ws';
+import { UpgradeResponse } from './websocket.js';
 
 export interface Locals {
-	upgradeWebSocket(): { socket: import("./websocket.js").WebSocket, response: Response };
+	upgradeWebSocket(): Promise<{ socket: import("./websocket.js").WebSocket, response: Response }>;
 }
 
 export function getAdapter(options: Options): AstroAdapter {
@@ -33,6 +35,7 @@ export default function createIntegration(userOptions: UserOptions): AstroIntegr
 	}
 
 	let _options: Options;
+	let viteDevServer: Parameters<NonNullable<AstroIntegration['hooks']['astro:server:setup']>>[0]['server'];
 	return {
 		name: '@astrojs/node',
 		hooks: {
@@ -65,6 +68,30 @@ export default function createIntegration(userOptions: UserOptions): AstroIntegr
 					);
 				}
 			},
+			'astro:server:setup' ({ server }) {
+				viteDevServer = server
+			},
+			'astro:server:start' ({ logger }) {
+				const astroDevHandler = viteDevServer.middlewares.stack.find(stackItem => (stackItem.handle as any).name === 'astroDevHandler')!.handle as (req: import("node:http").IncomingMessage, res: import("node:http").ServerResponse) => void
+				const server = new ws.WebSocketServer({ noServer: true })
+				viteDevServer.httpServer?.on('upgrade', (req, socket, head) => {
+					req[Symbol.for("astro.locals")] = {
+						async upgradeWebSocket() {
+							const ws = await new Promise<ws.WebSocket>(resolve => server.handleUpgrade(req, socket, head, resolve))
+							return { socket: ws, response: new UpgradeResponse }
+						}
+					}
+					astroDevHandler(req, fakeResponse)
+				})
+			}
 		},
 	};
 }
+
+const fakeResponse = {
+	setHeader() {},
+	write() {},
+	writeHead() {},
+	end() {},
+	on() {},
+} as any as import("node:http").ServerResponse
