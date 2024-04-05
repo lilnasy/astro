@@ -43,11 +43,13 @@
     "@types/node": "^18.17.8",
     "@types/send": "^0.17.4",
     "@types/server-destroy": "^1.0.3",
+    "@types/ws": "^8.5.10",
     "astro": "workspace:*",
     "astro-scripts": "workspace:*",
     "cheerio": "1.0.0-rc.12",
     "express": "^4.19.2",
-    "node-mocks-http": "^1.14.1"
+    "node-mocks-http": "^1.14.1",
+    "ws": "^8.16.0"
   },
   "publishConfig": {
     "provenance": true

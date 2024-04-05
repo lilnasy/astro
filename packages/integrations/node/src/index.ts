@@ -2,6 +2,10 @@ import type { AstroAdapter, AstroIntegration } from 'astro';
 import { AstroError } from 'astro/errors';
 import type { Options, UserOptions } from './types.js';
 
+export interface Locals {
+	upgradeWebSocket(): { socket: import("./websocket.js").WebSocket, response: Response };
+}
+
 export function getAdapter(options: Options): AstroAdapter {
 	return {
 		name: '@astrojs/node',

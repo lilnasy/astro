@@ -20,7 +20,7 @@ export function createAppHandler(app: NodeApp): RequestHandler {
 		console.error(reason);
 	});
 
-	return async (req, res, next, locals) => {
+	return async (req, res, next, locals = {}) => {
 		let request: Request;
 		try {
 			request = NodeApp.createRequest(req);
@@ -29,7 +29,7 @@ export function createAppHandler(app: NodeApp): RequestHandler {
 			res.end('Internal Server Error');
 			return;
 		}
-
+		locals.upgradeWebSocket = () => { throw new Error("Can't switch protocols on a non-upgrade request.") }
 		const routeData = app.match(request);
 		if (routeData) {
 			const response = await als.run(request.url, () =>
