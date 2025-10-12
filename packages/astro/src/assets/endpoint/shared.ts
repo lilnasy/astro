@@ -1,7 +1,7 @@
 // @ts-expect-error
 import { imageConfig } from 'astro:assets';
-import { isRemotePath, removeQueryString } from '@astrojs/internal-helpers/path';
-import { isRemoteAllowed } from '@astrojs/internal-helpers/remote';
+import { isRemotePath, removeQueryString } from '@astrojs/runtime/internal-helpers/path';
+import { isRemoteAllowed } from '@astrojs/runtime/internal-helpers/remote';
 import * as mime from 'mrmime';
 import { getConfiguredImageService } from '../internal.js';
 import { etag } from '../utils/etag.js';

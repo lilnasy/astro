@@ -1,5 +1,5 @@
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import { createMarkdownProcessor } from '@astrojs/runtime/markdown-remark';
 import { safeParseFrontmatter } from '../content/utils.js';
 import type { ContentEntryType } from '../types/public/content.js';
 

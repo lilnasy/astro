@@ -1,10 +1,10 @@
-export type { RemotePattern } from '@astrojs/internal-helpers/remote';
+export type { RemotePattern } from '@astrojs/runtime/internal-helpers/remote';
 export type {
 	MarkdownHeading,
 	RehypePlugins,
 	RemarkPlugins,
 	ShikiConfig,
-} from '@astrojs/markdown-remark';
+} from '@astrojs/runtime/markdown-remark';
 export type {
 	ExternalImageService,
 	ImageService,

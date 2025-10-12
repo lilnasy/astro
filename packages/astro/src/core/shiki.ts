@@ -2,7 +2,7 @@ import {
 	createShikiHighlighter,
 	type ShikiConfig,
 	type ShikiHighlighter,
-} from '@astrojs/markdown-remark';
+} from '@astrojs/runtime/markdown-remark';
 
 // Caches Promise<ShikiHighlighter> for reuse when the same theme and langs are provided
 const cachedHighlighters = new Map();

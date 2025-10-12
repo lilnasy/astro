@@ -2,7 +2,7 @@ import {
 	collapseDuplicateTrailingSlashes,
 	hasFileExtension,
 	isInternalPath,
-} from '@astrojs/internal-helpers/path';
+} from '@astrojs/runtime/internal-helpers/path';
 import { matchPattern, type RemotePattern } from '../../assets/utils/remotePattern.js';
 import { normalizeTheLocale } from '../../i18n/index.js';
 import type { RoutesList } from '../../types/astro.js';

@@ -1,4 +1,4 @@
-import type { MarkdownHeading } from '@astrojs/markdown-remark';
+import type { MarkdownHeading } from '@astrojs/runtime/markdown-remark';
 import { escape } from 'html-escaper';
 import { Traverse } from 'neotraverse/modern';
 import pLimit from 'p-limit';

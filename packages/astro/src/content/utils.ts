@@ -1,7 +1,7 @@
 import fsMod from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { parseFrontmatter } from '@astrojs/markdown-remark';
+import { parseFrontmatter } from '@astrojs/runtime/markdown-remark';
 import { slug as githubSlug } from 'github-slugger';
 import { green, red } from 'kleur/colors';
 import type { PluginContext } from 'rollup';

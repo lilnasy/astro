@@ -6,7 +6,7 @@ import {
 	matchPort,
 	matchProtocol,
 	type RemotePattern,
-} from '@astrojs/internal-helpers/remote';
+} from '@astrojs/runtime/internal-helpers/remote';
 
 export { isRemoteAllowed, matchHostname, matchPort, matchPathname, matchProtocol, matchPattern };
 

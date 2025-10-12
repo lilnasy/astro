@@ -1,4 +1,4 @@
-import { isRemotePath, removeBase } from '@astrojs/internal-helpers/path';
+import { isRemotePath, removeBase } from '@astrojs/runtime/internal-helpers/path';
 import { CONTENT_IMAGE_FLAG, IMAGE_IMPORT_PREFIX } from '../../content/consts.js';
 import { shorthash } from '../../runtime/server/shorthash.js';
 import { VALID_INPUT_FORMATS } from '../consts.js';

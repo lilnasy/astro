@@ -1,4 +1,4 @@
-import type { RehypePlugin } from '@astrojs/markdown-remark';
+import type { RehypePlugin } from '@astrojs/runtime/markdown-remark';
 import type { RootContent } from 'hast';
 import type {} from 'mdast-util-mdx';
 import type {

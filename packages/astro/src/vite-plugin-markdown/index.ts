@@ -4,7 +4,7 @@ import {
 	createMarkdownProcessor,
 	isFrontmatterValid,
 	type MarkdownProcessor,
-} from '@astrojs/markdown-remark';
+} from '@astrojs/runtime/markdown-remark';
 import type { Plugin } from 'vite';
 import { safeParseFrontmatter } from '../content/utils.js';
 import { AstroError, AstroErrorData } from '../core/errors/index.js';

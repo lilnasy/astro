@@ -1,4 +1,4 @@
-import { AstroTelemetry } from '@astrojs/telemetry';
+import { AstroTelemetry } from '@astrojs/runtime/telemetry';
 import { version as viteVersion } from 'vite';
 import { ASTRO_VERSION } from '../core/constants.js';
 

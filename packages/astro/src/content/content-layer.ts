@@ -1,5 +1,5 @@
 import { existsSync, promises as fs } from 'node:fs';
-import { createMarkdownProcessor, type MarkdownProcessor } from '@astrojs/markdown-remark';
+import { createMarkdownProcessor, type MarkdownProcessor } from '@astrojs/runtime/markdown-remark';
 import PQueue from 'p-queue';
 import type { FSWatcher } from 'vite';
 import xxhash from 'xxhash-wasm';

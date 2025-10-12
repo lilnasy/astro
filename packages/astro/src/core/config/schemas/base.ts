@@ -4,8 +4,8 @@ import type {
 	RemarkPlugin as _RemarkPlugin,
 	RemarkRehype as _RemarkRehype,
 	ShikiConfig,
-} from '@astrojs/markdown-remark';
-import { markdownConfigDefaults, syntaxHighlightDefaults } from '@astrojs/markdown-remark';
+} from '@astrojs/runtime/markdown-remark';
+import { markdownConfigDefaults, syntaxHighlightDefaults } from '@astrojs/runtime/markdown-remark';
 import { type BuiltinTheme, bundledThemes } from 'shiki';
 import { z } from 'zod';
 import { localFontFamilySchema, remoteFontFamilySchema } from '../../../assets/fonts/config.js';

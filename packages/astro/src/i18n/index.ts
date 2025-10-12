@@ -1,4 +1,4 @@
-import { appendForwardSlash, joinPaths } from '@astrojs/internal-helpers/path';
+import { appendForwardSlash, joinPaths } from '@astrojs/runtime/internal-helpers/path';
 import type { SSRManifest } from '../core/app/types.js';
 import { shouldAppendForwardSlash } from '../core/build/util.js';
 import { REROUTE_DIRECTIVE_HEADER } from '../core/constants.js';

@@ -1,4 +1,4 @@
-import { appendForwardSlash, removeTrailingForwardSlash } from '@astrojs/internal-helpers/path';
+import { appendForwardSlash, removeTrailingForwardSlash } from '@astrojs/runtime/internal-helpers/path';
 import { escape } from 'html-escaper';
 
 interface ErrorTemplateOptions {

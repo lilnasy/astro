@@ -1,12 +1,12 @@
 import type { OutgoingHttpHeaders } from 'node:http';
-import type { RemotePattern } from '@astrojs/internal-helpers/remote';
+import type { RemotePattern } from '@astrojs/runtime/internal-helpers/remote';
 import type {
 	RehypePlugins,
 	RemarkPlugins,
 	RemarkRehype,
 	ShikiConfig,
 	SyntaxHighlightConfigType,
-} from '@astrojs/markdown-remark';
+} from '@astrojs/runtime/markdown-remark';
 import type { BuiltinDriverName, BuiltinDriverOptions, Driver, Storage } from 'unstorage';
 import type { UserConfig as OriginalViteUserConfig, SSROptions as ViteSSROptions } from 'vite';
 import type { AstroFontProvider, FontFamily } from '../../assets/fonts/types.js';

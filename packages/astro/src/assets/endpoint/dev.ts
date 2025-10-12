@@ -3,7 +3,7 @@ import { root } from 'astro:config/server';
 import { readFile } from 'node:fs/promises';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { isParentDirectory } from '@astrojs/internal-helpers/path';
+import { isParentDirectory } from '@astrojs/runtime/internal-helpers/path';
 import type { APIRoute } from '../../types/public/common.js';
 import { handleImageRequest, loadRemoteImage } from './shared.js';
 

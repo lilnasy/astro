@@ -1,1 +1,1 @@
-export * from '@astrojs/internal-helpers/path';
+export * from '@astrojs/runtime/internal-helpers/path';
